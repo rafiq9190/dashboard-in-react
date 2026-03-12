@@ -17,8 +17,15 @@ import { ThemeSwitch } from '@/components/theme-switch'
 import { Analytics } from './components/analytics'
 import { Overview } from './components/overview'
 import { RecentSales } from './components/recent-sales'
+import { CourierDashboardSection } from './components/courier-dashboard-section'
+
+import { useStoreStore } from '@/stores/store-store'
+import { storeDashboardData } from './data/store-specific-data'
 
 export function Dashboard() {
+  const { activeStore } = useStoreStore()
+  const currentData = storeDashboardData[activeStore.name as keyof typeof storeDashboardData] || storeDashboardData['store 1']
+
   return (
     <>
       {/* ===== Top Heading ===== */}
@@ -35,7 +42,7 @@ export function Dashboard() {
       {/* ===== Main ===== */}
       <Main>
         <div className='mb-2 flex items-center justify-between space-y-2'>
-          <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>Dashboard ({activeStore.name})</h1>
           <div className='flex items-center space-x-2'>
             <Button>Download</Button>
           </div>
@@ -78,9 +85,9 @@ export function Dashboard() {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-2xl font-bold'>$45,231.89</div>
+                  <div className='text-2xl font-bold'>{currentData.revenue}</div>
                   <p className='text-xs text-muted-foreground'>
-                    +20.1% from last month
+                    {currentData.revenueGrowth}
                   </p>
                 </CardContent>
               </Card>
@@ -105,9 +112,9 @@ export function Dashboard() {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-2xl font-bold'>+2350</div>
+                  <div className='text-2xl font-bold'>{currentData.subscriptions}</div>
                   <p className='text-xs text-muted-foreground'>
-                    +180.1% from last month
+                    {currentData.subscriptionsGrowth}
                   </p>
                 </CardContent>
               </Card>
@@ -129,9 +136,9 @@ export function Dashboard() {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-2xl font-bold'>+12,234</div>
+                  <div className='text-2xl font-bold'>{currentData.sales}</div>
                   <p className='text-xs text-muted-foreground'>
-                    +19% from last month
+                    {currentData.salesGrowth}
                   </p>
                 </CardContent>
               </Card>
@@ -154,9 +161,9 @@ export function Dashboard() {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-2xl font-bold'>+573</div>
+                  <div className='text-2xl font-bold'>{currentData.activeNow}</div>
                   <p className='text-xs text-muted-foreground'>
-                    +201 since last hour
+                    {currentData.activeNowGrowth}
                   </p>
                 </CardContent>
               </Card>
@@ -174,13 +181,24 @@ export function Dashboard() {
                 <CardHeader>
                   <CardTitle>Recent Sales</CardTitle>
                   <CardDescription>
-                    You made 265 sales this month.
+                    You made {currentData.salesCount} sales this month.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <RecentSales />
                 </CardContent>
               </Card>
+            </div>
+
+            {/* ===== Couriers Section ===== */}
+            <div>
+              <div className='mb-3 flex items-center justify-between'>
+                <div>
+                  <h2 className='text-base font-semibold leading-none'>Couriers</h2>
+                  <p className='mt-1 text-xs text-muted-foreground'>Order status breakdown per courier for {activeStore.name}</p>
+                </div>
+              </div>
+              <CourierDashboardSection storeName={activeStore.name} />
             </div>
           </TabsContent>
           <TabsContent value='analytics' className='space-y-4'>

@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import {
   Card,
   CardContent,
@@ -6,13 +7,26 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { AnalyticsChart } from './analytics-chart'
+import { useStoreStore } from '@/stores/store-store'
 
 export function Analytics() {
+  const { activeStore } = useStoreStore()
+
+  const metrics = useMemo(() => {
+    const seed = activeStore.name.length
+    return {
+      clicks: (1248 + seed * 100).toLocaleString(),
+      visitors: (832 + seed * 50).toLocaleString(),
+      bounce: `${42 - (seed % 5)}%`,
+      session: `${3 + (seed % 2)}m ${24 + (seed % 30)}s`
+    }
+  }, [activeStore])
+
   return (
     <div className='space-y-4'>
       <Card>
         <CardHeader>
-          <CardTitle>Traffic Overview</CardTitle>
+          <CardTitle>Traffic Overview ({activeStore.name})</CardTitle>
           <CardDescription>Weekly clicks and unique visitors</CardDescription>
         </CardHeader>
         <CardContent className='px-6'>
@@ -38,7 +52,7 @@ export function Analytics() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>1,248</div>
+            <div className='text-2xl font-bold'>{metrics.clicks}</div>
             <p className='text-xs text-muted-foreground'>+12.4% vs last week</p>
           </CardContent>
         </Card>
@@ -62,7 +76,7 @@ export function Analytics() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>832</div>
+            <div className='text-2xl font-bold'>{metrics.visitors}</div>
             <p className='text-xs text-muted-foreground'>+5.8% vs last week</p>
           </CardContent>
         </Card>
@@ -83,7 +97,7 @@ export function Analytics() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>42%</div>
+            <div className='text-2xl font-bold'>{metrics.bounce}</div>
             <p className='text-xs text-muted-foreground'>-3.2% vs last week</p>
           </CardContent>
         </Card>
@@ -105,7 +119,7 @@ export function Analytics() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>3m 24s</div>
+            <div className='text-2xl font-bold'>{metrics.session}</div>
             <p className='text-xs text-muted-foreground'>+18s vs last week</p>
           </CardContent>
         </Card>

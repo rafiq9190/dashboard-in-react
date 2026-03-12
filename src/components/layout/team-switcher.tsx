@@ -16,6 +16,8 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 
+import { useStoreStore } from '@/stores/store-store'
+
 type TeamSwitcherProps = {
   teams: {
     name: string
@@ -26,7 +28,7 @@ type TeamSwitcherProps = {
 
 export function TeamSwitcher({ teams }: TeamSwitcherProps) {
   const { isMobile } = useSidebar()
-  const [activeTeam, setActiveTeam] = React.useState(teams[0])
+  const { activeStore: activeTeam, setActiveStore: setActiveTeam } = useStoreStore()
 
   return (
     <SidebarMenu>
