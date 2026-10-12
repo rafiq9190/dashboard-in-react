@@ -19,4 +19,10 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  // Tailwind runs through @tailwindcss/vite, so no PostCSS plugins are needed.
+  // Declaring this inline also stops Vite from searching parent directories
+  // for a postcss config and picking up an unrelated one.
+  css: {
+    postcss: { plugins: [] },
+  },
 })

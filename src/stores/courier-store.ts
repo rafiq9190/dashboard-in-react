@@ -26,7 +26,9 @@ export const defaultOrderStatuses: Omit<OrderStatus, 'count'>[] = [
     { id: 'in_transit', label: 'In Transit', color: '#8b5cf6' },
 ]
 
-const availableCouriers: Omit<Courier, 'isActive' | 'orderStatuses'>[] = [
+export type AvailableCourier = Omit<Courier, 'isActive' | 'orderStatuses'>
+
+const availableCouriers: AvailableCourier[] = [
     { id: 'tcs', name: 'TCS', logo: 'TCS', trackingUrl: 'https://www.tcsexpress.com' },
     { id: 'mp', name: 'M&P', logo: 'M&P', trackingUrl: 'https://www.mulphypackers.com' },
     { id: 'leopard', name: 'Leopard', logo: 'LEO', trackingUrl: 'https://leopardscourier.com' },

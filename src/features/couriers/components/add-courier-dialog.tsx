@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { availableCouriers, useCourierStore } from '@/stores/courier-store'
+import {
+    type AvailableCourier,
+    useCourierStore,
+} from '@/stores/courier-store'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -17,7 +20,7 @@ type Props = {
     open: boolean
     onOpenChange: (open: boolean) => void
     storeName: string
-    availableCouriers: typeof availableCouriers
+    availableCouriers: AvailableCourier[]
 }
 
 export function AddCourierDialog({
